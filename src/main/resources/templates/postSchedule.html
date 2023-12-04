@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>일정 추가</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        label {
+            margin: 10px 0;
+            display: block;
+            font-weight: bold;
+        }
+
+        select, input {
+            margin: 5px 0;
+            padding: 8px;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<h1>일정 추가</h1>
+
+<label for="day">요일:</label>
+<select id="day">
+    <option value="monday">월요일</option>
+    <option value="tuesday">화요일</option>
+    <option value="wednesday">수요일</option>
+    <option value="thursday">목요일</option>
+    <option value="friday">금요일</option>
+    <option value="saturday">토요일</option>
+    <option value="sunday">일요일</option>
+</select>
+
+<label for="time">시간:</label>
+<input type="time" id="time">
+
+<label for="boss">보스:</label>
+<select id="boss">
+    <option value="kaling">카링</option>
+    <option value="kalos">칼로스</option>
+    <option value="seren">세렌</option>
+    <option value="neohila">진힐라</option>
+    <option value="djunkel">듄켈</option>
+    <option value="dusk">더스크</option>
+    <option value="will">윌</option>
+    <option value="lucid">루시드</option>
+</select>
+
+<label for="difficulty">난이도:</label>
+<select id="difficulty">
+    <option value="normal">노말</option>
+    <option value="hard">하드</option>
+    <option value="chaos">카오스</option>
+</select>
+
+<button onclick="addSchedule()">일정 추가</button>
+
+<script>
+        function addSchedule() {
+            const day = document.getElementById('day').value;
+            const time = document.getElementById('time').value;
+            const boss = document.getElementById('boss').value;
+            const difficulty = document.getElementById('difficulty').value;
+
+            fetch('/schedulers', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ day, time, boss, difficulty }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('일정이 추가되었습니다.');
+            })
+            .catch(error => {
+                console.error('일정 추가 중 오류가 발생했습니다.', error);
+            });
+
+            window.location.href = '/schedulers';
+        }
+    </script>
+
+</body>
+</html>
